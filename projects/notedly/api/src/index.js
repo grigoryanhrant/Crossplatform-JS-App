@@ -14,19 +14,37 @@ const typeDefs = gql`
     id: ID!
     content: String!
     author: String!
- },
+ }
  
  type Query {
-    hello: String!
     notes: [Note!]!
     note(id: ID!): Note!
+    demo(content: String!): Note!
+ }
+ 
+ type Mutation {
+    newNote(content: String!): Note!
  }
 `;
 
 const resolvers = {
   Query: {
-    hello: () => 'Hello world!',
     notes: () => notes,
+    note: (parent, args) => {
+      return notes.find(note => note.id === args.id);
+    },
+  },
+  Mutation: {
+    newNote: (parent, args) => {
+      let noteValue = {
+        id: `${notes.length + 1}`,
+        content: args.content,
+        author: 'Adam Scott',
+      };
+      console.log(notes)
+      notes.push(noteValue)
+      return noteValue
+    }
   }
 };
 
