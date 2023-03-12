@@ -21,7 +21,6 @@ const typeDefs = gql`
     note(id: ID!): Note!
     demo(content: String!): Note!
  }
- 
  type Mutation {
     newNote(content: String!): Note!
  }
