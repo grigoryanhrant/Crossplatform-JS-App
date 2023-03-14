@@ -1,7 +1,9 @@
 const express = require('express');
 const { ApolloServer, gql } = require('apollo-server-express');
-
+require('dotenv').config();
+const db = require('./db');
 const port = process.env.PORT || 4000;
+const DB_HOST = process.env.DB_HOST;
 
 let notes = [
   { id: '1', content: 'This is a note', author: 'Adam Scott' },
@@ -40,7 +42,6 @@ const resolvers = {
         content: args.content,
         author: 'Adam Scott',
       };
-      console.log(notes)
       notes.push(noteValue)
       return noteValue
     }
@@ -48,6 +49,8 @@ const resolvers = {
 };
 
 const app = express();
+
+db.connect(DB_HOST);
 
 const server = new ApolloServer({ typeDefs, resolvers });
 
